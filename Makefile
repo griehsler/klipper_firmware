@@ -6,7 +6,7 @@ KLIPPER_CONFIG=${KLIPPER_DIR}/.config
 SCRIPTS_DIR=~/scripts
 
 power_on:
-	${SCRIPTS_DIR}/psu_on.sh
+	curl -X POST http://localhost/machine/device_power/on?printer >/dev/null
 
 clean:
 	${KLIPPER_MAKE} clean
@@ -22,7 +22,7 @@ build_skr: clean
 	cp skr_1.4.config ${KLIPPER_CONFIG}
 	${KLIPPER_MAKE}
 
-flash_skr: build_skr stop
+flash_skr: power_on stop build_skr
 	${KLIPPER_DIR}/scripts/flash-sdcard.sh /dev/serial/by-id/usb-Klipper_lpc1768_16C0FF13820C25AE36111C52851E00F5-if00 btt-skr-v1.4
 	${KLIPPER_DIR}/scripts/flash-sdcard.sh /dev/serial/by-id/usb-Klipper_lpc1768_17140F0F5B1652532260C54C050000F5-if00 btt-skr-v1.4
 
