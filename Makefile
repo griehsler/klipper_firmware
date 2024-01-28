@@ -16,7 +16,7 @@ build_rpi: clean
 	${KLIPPER_MAKE}
 
 flash_rpi: build_rpi stop
-	sudo ${KLIPPER_MAKE} flash
+	${KLIPPER_MAKE} flash
 
 build_skr: clean
 	cp skr_1.4.config ${KLIPPER_CONFIG}
@@ -32,7 +32,7 @@ build_ercf: clean
 
 flash_ercf: build_ercf stop
 	@read -p "Please short ERCF reset pads twice. Press any key when done..." result
-	sudo /usr/local/bin/bossac -i -d -p /dev/serial/by-id/usb-Seeed_Studio_Seeeduino_XIAO_83FEDA1550553439392E3120FF0F2141-if00 -e -w -v -R --offset=0x2000 ${KLIPPER_DIR}/out/klipper.bin
+	/usr/local/bin/bossac -i -d -p /dev/serial/by-id/usb-Seeed_Studio_Seeeduino_XIAO_83FEDA1550553439392E3120FF0F2141-if00 -e -w -v -R --offset=0x2000 ${KLIPPER_DIR}/out/klipper.bin
 
 stop:
 	service klipper stop
