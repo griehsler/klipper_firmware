@@ -1,4 +1,4 @@
-.PHONY: clear build_rpi flash_rpi build_skr flash_skr build_ercf flash_ercf stop all power_on
+.PHONY: clean build_rpi flash_rpi build_skr flash_skr flash_skr1 flash_skr2 build_ercf flash_ercf stop all power_on
 
 KLIPPER_DIR=~/klipper
 KLIPPER_MAKE=make -C ${KLIPPER_DIR}
@@ -22,8 +22,12 @@ build_skr: clean
 	cp skr_1.4.config ${KLIPPER_CONFIG}
 	${KLIPPER_MAKE}
 
-flash_skr: power_on stop build_skr
+flash_skr: flash_skr1 flash_skr2
+
+flash_skr1: power_on stop build_skr
 	${KLIPPER_DIR}/scripts/flash-sdcard.sh /dev/serial/by-id/usb-Klipper_lpc1768_16C0FF13820C25AE36111C52851E00F5-if00 btt-skr-v1.4
+
+flash_skr2: power_on stop build_skr
 	${KLIPPER_DIR}/scripts/flash-sdcard.sh /dev/serial/by-id/usb-Klipper_lpc1768_17140F0F5B1652532260C54C050000F5-if00 btt-skr-v1.4
 
 build_ercf: clean
