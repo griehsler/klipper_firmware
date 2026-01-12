@@ -38,8 +38,15 @@ flash_ercf: build_ercf stop
 	@read -p "Please short ERCF reset pads twice. Press any key when done..." result
 	/usr/local/bin/bossac -i -d -p /dev/serial/by-id/usb-Seeed_Studio_Seeeduino_XIAO_83FEDA1550553439392E3120FF0F2141-if00 -e -w -v -R --offset=0x2000 ${KLIPPER_DIR}/out/klipper.bin
 
+build_ebb: clean
+	cp EBB.config ${KLIPPER_CONFIG}
+	${KLIPPER_MAKE}
+
+flash_ebb: build_ebb stop
+	${KLIPPER_MAKE} flash FLASH_DEVICE=/dev/serial/by-id/usb-Klipper_rp2040_50445061209B661C-if00
+
 stop:
 	service klipper stop
 
-all: flash_rpi flash_skr #flash_ercf
+all: flash_rpi flash_skr flash_ebb #flash_ercf
 	service klipper start
